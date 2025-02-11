@@ -54,6 +54,8 @@ const Dashboard = () => {
   // Loader state
   const [loading, setLoading] = useState(true);
 
+
+
   const openMessageCarousel = (message) => {
     setCurrentMessage(message);
     setShowMessageModal(true);
@@ -592,40 +594,44 @@ const Dashboard = () => {
           Admin Panel
         </h2>
         <nav>
-          <ul className="space-y-2">
-            {[
-              { id: "students", icon: faUser, label: "Student List" },
-              { id: "addCourse", icon: faPlus, label: "Add Course" },
-              { id: "allCourses", icon: faBook, label: "All Courses" },
-              {
-                id: "contactform",
-                icon: faAddressBook,
-                label: "Contact Forms",
-              },
-            ].map((item) => (
-              <li
-                key={item.id}
-                className={`p-3 cursor-pointer flex items-center gap-3 rounded-lg transition-colors
-              ${
-                activeTab === item.id
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-gray-700"
-              }`}
-                onClick={() => setActiveTab(item.id)}
-              >
-                <FontAwesomeIcon icon={item.icon} className="w-5 h-5" />
-                <span className="text-sm font-medium">{item.label}</span>
-              </li>
-            ))}
-            <li
-              className="p-3 cursor-pointer flex items-center gap-3 rounded-lg hover:bg-gray-700 transition-colors"
-              onClick={handleLogout}
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} className="w-5 h-5" />
-              <span className="text-sm font-medium">Logout</span>
-            </li>
-          </ul>
-        </nav>
+  <ul className="space-y-2">
+    {[
+      { id: "students", icon: faUser, label: "Student List" },
+      { id: "addCourse", icon: faPlus, label: "Add Course" },
+      { id: "allCourses", icon: faBook, label: "All Courses" },
+      { id: "contactform", icon: faAddressBook, label: "Contact Forms" },
+    ].map((item) => (
+      <li
+        key={item.id}
+        className={`p-3 cursor-pointer flex items-center gap-3 rounded-lg transition-colors
+          ${
+            activeTab === item.id
+              ? "bg-blue-600 text-white"
+              : "hover:bg-gray-700"
+          }`}
+        onClick={() => {
+          setActiveTab(item.id);
+          // Add this line to close the mobile menu
+          setIsMenuOpen(false);
+        }}
+      >
+        <FontAwesomeIcon icon={item.icon} className="w-5 h-5" />
+        <span className="text-sm font-medium">{item.label}</span>
+      </li>
+    ))}
+    <li
+      className="p-3 cursor-pointer flex items-center gap-3 rounded-lg hover:bg-gray-700 transition-colors"
+      onClick={() => {
+        handleLogout();
+        // Add this line to close the mobile menu
+        setIsMenuOpen(false);
+      }}
+    >
+      <FontAwesomeIcon icon={faSignOutAlt} className="w-5 h-5" />
+      <span className="text-sm font-medium">Logout</span>
+    </li>
+  </ul>
+</nav>
       </div>
 
       {/* Main Content */}
