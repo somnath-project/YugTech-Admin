@@ -116,6 +116,32 @@ const Dashboard = () => {
     };
 
     fetchData();
+
+  //   const studentInterval = setInterval(() => {
+  //     fetch(`${backendURL}/api/enrollment`)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         setStudents(data);
+  //         setFilteredStudents(data);
+  //       })
+  //       .catch((error) => console.error("Error fetching students:", error));
+  //   }, 5000); // Fetch every 5 seconds
+
+  //     // Fetch contact forms
+  // const contactFormInterval = setInterval(() => {
+  //   fetch(`${backendURL}/api/contactform`)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setContactForm(data);
+  //     })
+  //     .catch((error) => console.error("Error fetching contact forms:", error));
+  // }, 5000); // Fetch every 5 seconds
+
+  //     return () => {
+  //   clearInterval(studentInterval); // Cleanup student interval on component unmount
+  //   clearInterval(contactFormInterval); // Cleanup contact form interval on component unmount
+  // };
+
   }, [navigate]);
 
   const formatIndianDateTime = (dateString) => {

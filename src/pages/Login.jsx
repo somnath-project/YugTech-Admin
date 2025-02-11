@@ -1,121 +1,126 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
+import { ClipLoader } from "react-spinners";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // Loader state
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true); // Start loader
+    setLoading(true);
 
     setTimeout(() => {
-      // Simulate API call delay
-      setLoading(false); // Stop loader
-
+      setLoading(false);
       const user = import.meta.env.VITE_LOGIN_USER;
       const pass = import.meta.env.VITE_LOGIN_PASSWORD;
 
       if (username === user && password === pass) {
-        sessionStorage.setItem("username", username); // Store username in session
+        sessionStorage.setItem("username", username);
         navigate("/dashboard");
       } else {
-        Swal.fire("Error", "Invalid Credentials!!", "error");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Invalid Credentials!",
+          background: "#1f2937",
+          color: "#fff",
+          confirmButtonColor: "#3b82f6",
+        });
       }
-    }, 2000); // 2-second delay
+    }, 2000);
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center bg-gray-100 overflow-hidden">
-      {/* Background Shape */}
-      <div
-        className="absolute inset-0 bg-blue-700"
-        style={{
-          clipPath: "polygon(0 20%, 100% 0, 100% 80%, 0 100%)",
-        }}
-      ></div>
-
-      {/* Login Form */}
-      <div className="relative w-full max-w-sm bg-white rounded-lg shadow-md p-6 z-10">
-        <div className="text-center mb-4">
-          <h1 className="text-2xl font-semibold text-blue-600">Admin Login</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center p-4">
+      <div className="relative w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-white mb-2 animate-fade-in-down">
+            Welcome Back
+          </h1>
+          <p className="text-gray-300">Sign in to your admin account</p>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="Enter your email"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <input
-                type="password"
-                id="password"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <button
-                  type="button"
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
+
+        <div className="bg-white rounded-2xl shadow-2xl p-8 transition-all duration-300 hover:shadow-3xl">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3.5 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M3.293 9.293a1 1 0 011.414 0L10 14.586l5.293-5.293a1 1 0 011.414 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
+                    {showPassword ? (
+                      <EyeSlashIcon className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <EyeIcon className="w-5 h-5 text-gray-500" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex justify-between items-center mb-4">
-            <a
-              href="#"
-              className="text-sm text-blue-600 hover:underline focus:outline-none"
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3.5 px-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all flex items-center justify-center"
             >
-              Forgot your password?
-            </a>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            disabled={loading} // Disable button while loading
-          >
-            {loading ? <ClipLoader color="white" size={20} /> : "Sign In"}
-          </button>
-        </form>
+              {loading ? (
+                <ClipLoader color="#fff" size={24} />
+              ) : (
+                <span>Sign In</span>
+              )}
+            </button>
+
+            <div className="text-center">
+              <a
+                href="#"
+                className="text-sm text-blue-600 hover:text-blue-800 transition-colors font-medium"
+              >
+                Forgot password?
+              </a>
+            </div>
+          </form>
+        </div>
+
+        <div className="text-center">
+          <p className="text-gray-300 text-sm">
+            © 2025 NextGen Institute. All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
   );
