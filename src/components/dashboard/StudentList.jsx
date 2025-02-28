@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Stat, StatGroup, Progress, HStack, VStack } from "rsuite";
+import PeoplesIcon from "@rsuite/icons/Peoples";
+import "rsuite/dist/rsuite.min.css";
 
 const StudentList = ({
   filteredStudents,
@@ -23,6 +26,23 @@ const StudentList = ({
     indexOfFirstStudent,
     indexOfLastStudent
   );
+
+  // Calculate payment statistics
+  const completedPayments = filteredStudents.filter(
+    (student) => student.paymentStatus === "complete"
+  ).length;
+  const pendingPayments = filteredStudents.filter(
+    (student) => student.paymentStatus === "pending"
+  ).length;
+  const totalStudents = filteredStudents.length;
+
+  const completedPercentage =
+    totalStudents > 0
+      ? Math.round((completedPayments / totalStudents) * 100)
+      : 0;
+
+  const pendingPercentage =
+    totalStudents > 0 ? Math.round((pendingPayments / totalStudents) * 100) : 0;
 
   const exportToPDF = () => {
     const doc = new jsPDF();
@@ -62,10 +82,63 @@ const StudentList = ({
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="flex flex-col md:flex-row justify-between items-center p-4 md:px-6 lg:px-8 bg-white border-b border-gray-100 shadow-sm">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-0">
-            Students
-          </h2>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 md:px-6 lg:px-8 bg-white border-b border-gray-100 shadow-sm">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4 md:mb-0">
+            {/* <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+    Students
+  </h2> */}
+            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Total Students */}
+              <Stat bordered className="w-full p-3 flex items-center">
+                <div className="flex items-center gap-3">
+                  <PeoplesIcon color="blue" style={{ fontSize: 24 }} />
+                  <div>
+                    <Stat.Value className="text-lg block">
+                      {totalStudents}
+                    </Stat.Value>
+                    <Stat.Label className="text-sm">Total Students</Stat.Label>
+                  </div>
+                </div>
+              </Stat>
+
+              {/* Completed Payments */}
+              <Stat bordered className="w-full p-3">
+                <div className="flex items-center gap-3">
+                  <Progress.Circle
+                    percent={completedPercentage}
+                    width={40}
+                    strokeColor="#87d068"
+                    strokeWidth={8}
+                    trailWidth={8}
+                  />
+                  <div>
+                    <Stat.Value className="block">
+                      {completedPayments}
+                    </Stat.Value>
+                    <Stat.Label className="text-sm">Completed</Stat.Label>
+                  </div>
+                </div>
+              </Stat>
+
+              {/* Pending Payments */}
+              <Stat bordered className="w-full p-3">
+                <div className="flex items-center gap-3">
+                  <Progress.Circle
+                    percent={pendingPercentage}
+                    width={40}
+                    strokeColor="#ffc107"
+                    strokeWidth={8}
+                    trailWidth={8}
+                  />
+                  <div>
+                    <Stat.Value className="block">{pendingPayments}</Stat.Value>
+                    <Stat.Label className="text-sm">Pending</Stat.Label>
+                  </div>
+                </div>
+              </Stat>
+            </div>
+          </div>
+
           <div className="w-full md:w-auto flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <input
