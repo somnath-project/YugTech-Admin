@@ -106,7 +106,7 @@ const StudentList = ({
                 <div className="flex items-center gap-3">
                   <Progress.Circle
                     percent={completedPercentage}
-                    width={40}
+                    width={50}
                     strokeColor="#87d068"
                     strokeWidth={8}
                     trailWidth={8}
@@ -125,7 +125,7 @@ const StudentList = ({
                 <div className="flex items-center gap-3">
                   <Progress.Circle
                     percent={pendingPercentage}
-                    width={40}
+                    width={50}
                     strokeColor="#ffc107"
                     strokeWidth={8}
                     trailWidth={8}
