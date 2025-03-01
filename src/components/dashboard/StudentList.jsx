@@ -3,9 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { Stat, StatGroup, Progress, HStack, VStack } from "rsuite";
+import { Stat, Progress } from "rsuite";
 import PeoplesIcon from "@rsuite/icons/Peoples";
 import "rsuite/dist/rsuite.min.css";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import { TableVirtuoso } from "react-virtuoso";
 
 const StudentList = ({
   filteredStudents,
@@ -27,7 +37,7 @@ const StudentList = ({
     indexOfLastStudent
   );
 
-  // Calculate payment statistics
+  // Payment statistics calculations
   const completedPayments = filteredStudents.filter(
     (student) => student.paymentStatus === "complete"
   ).length;
@@ -40,10 +50,10 @@ const StudentList = ({
     totalStudents > 0
       ? Math.round((completedPayments / totalStudents) * 100)
       : 0;
-
   const pendingPercentage =
     totalStudents > 0 ? Math.round((pendingPayments / totalStudents) * 100) : 0;
 
+  // PDF Export
   const exportToPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(18);
@@ -79,16 +89,120 @@ const StudentList = ({
     doc.save(`students_data_${currentDate}.pdf`);
   };
 
+  // Table configuration
+  const columns = [
+    { width: 70, label: "Sr No", dataKey: "srNo" },
+    { width: 150, label: "Name", dataKey: "name" },
+    { width: 150, label: "Course", dataKey: "course" },
+    { width: 200, label: "Email", dataKey: "email" },
+    { width: 130, label: "Phone", dataKey: "phone" },
+    { width: 120, label: "City", dataKey: "city" },
+    { width: 150, label: "Payment Status", dataKey: "paymentStatus" },
+    { width: 180, label: "Registration Date", dataKey: "registrationDate" },
+    { width: 100, label: "Actions", dataKey: "actions" },
+  ];
+
+  const rows = currentStudents.map((student, index) => ({
+    id: student.id,
+    srNo: index + 1 + (currentPage - 1) * studentsPerPage,
+    name: student.name,
+    course: student.courseName,
+    email: student.email,
+    phone: student.phone,
+    city: student.city,
+    paymentStatus: student.paymentStatus,
+    registrationDate: formatIndianDateTime(student.enrollmentDate),
+  }));
+
+  const VirtuosoTableComponents = {
+    Scroller: React.forwardRef((props, ref) => (
+      <TableContainer component={Paper} {...props} ref={ref} />
+    )),
+    Table: (props) => (
+      <Table
+        {...props}
+        sx={{ borderCollapse: "separate", tableLayout: "fixed" }}
+      />
+    ),
+    TableHead: React.forwardRef((props, ref) => (
+      <TableHead {...props} ref={ref} />
+    )),
+    TableRow,
+    TableBody: React.forwardRef((props, ref) => (
+      <TableBody {...props} ref={ref} />
+    )),
+  };
+
+  const fixedHeaderContent = () => (
+    <TableRow>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          variant="head"
+          style={{ width: column.width }}
+          sx={{
+            backgroundColor: "background.paper",
+            fontWeight: "bold",
+            fontSize: "0.875rem",
+          }}
+        >
+          {column.label}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+
+  const rowContent = (_index, row) => (
+    <React.Fragment>
+      {columns.map((column) => {
+        if (column.dataKey === "paymentStatus") {
+          return (
+            <TableCell key={column.dataKey}>
+              <select
+                value={row.paymentStatus || "pending"}
+                onChange={(e) =>
+                  handlePaymentStatusChange(row.id, e.target.value)
+                }
+                className={`border border-gray-300 rounded-lg px-2 py-1 ${
+                  row.paymentStatus === "complete"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
+                <option value="pending">Pending</option>
+                <option value="complete">Complete</option>
+              </select>
+            </TableCell>
+          );
+        }
+        if (column.dataKey === "actions") {
+          return (
+            <TableCell key={column.dataKey}>
+              <button
+                onClick={() => handleDeleteStudent(row.id)}
+                className="text-red-500 hover:text-red-700 transition"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </TableCell>
+          );
+        }
+        return (
+          <TableCell key={column.dataKey} style={{ width: column.width }}>
+            {row[column.dataKey]}
+          </TableCell>
+        );
+      })}
+    </React.Fragment>
+  );
+
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        {/* Header Section with Stats and Search */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 md:px-6 lg:px-8 bg-white border-b border-gray-100 shadow-sm">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4 md:mb-0">
-            {/* <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-    Students
-  </h2> */}
             <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Total Students */}
               <Stat bordered className="w-full p-3 flex items-center">
                 <div className="flex items-center gap-3">
                   <PeoplesIcon color="blue" style={{ fontSize: 24 }} />
@@ -101,7 +215,6 @@ const StudentList = ({
                 </div>
               </Stat>
 
-              {/* Completed Payments */}
               <Stat bordered className="w-full p-3">
                 <div className="flex items-center gap-3">
                   <Progress.Circle
@@ -120,7 +233,6 @@ const StudentList = ({
                 </div>
               </Stat>
 
-              {/* Pending Payments */}
               <Stat bordered className="w-full p-3">
                 <div className="flex items-center gap-3">
                   <Progress.Circle
@@ -183,95 +295,16 @@ const StudentList = ({
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sr No
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Course Name
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Phone
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  City
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Payment Status
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Registration Date
-                </th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {currentStudents.map((student, index) => (
-                <tr
-                  key={student.id}
-                  className="hover:bg-gray-100 transition duration-200"
-                >
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {index + 1 + (currentPage - 1) * studentsPerPage}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {student.name}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {student.courseName}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {student.email}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {student.phone}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {student.city}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    <select
-                      value={student.paymentStatus || "pending"}
-                      onChange={(e) =>
-                        handlePaymentStatusChange(student.id, e.target.value)
-                      }
-                      className={`border border-gray-300 rounded-lg px-2 py-1 ${
-                        student.paymentStatus === "complete"
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="complete">Complete</option>
-                    </select>
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                    {formatIndianDateTime(student.enrollmentDate)}
-                  </td>
-                  <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-gray-800">
-                    <button
-                      onClick={() => handleDeleteStudent(student.id)}
-                      className="text-red-500 hover:text-red-700 transition"
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+
+        {/* Virtualized Table */}
+        <Paper style={{ height: 600, width: "100%" }}>
+          <TableVirtuoso
+            data={rows}
+            components={VirtuosoTableComponents}
+            fixedHeaderContent={fixedHeaderContent}
+            itemContent={rowContent}
+          />
+        </Paper>
 
         {/* Pagination */}
         <div className="flex justify-between items-center px-4 py-3 bg-white border-t border-gray-200 rounded-bl-lg rounded-br-lg shadow-sm">
