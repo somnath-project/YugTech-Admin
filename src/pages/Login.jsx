@@ -118,7 +118,7 @@ const Login = () => {
 
         <div className="text-center">
           <p className="text-gray-300 text-sm">
-            © 2025 NextGen Institute. All rights reserved.
+            © 2025 YugTech Academy. All rights reserved.
           </p>
         </div>
       </div>

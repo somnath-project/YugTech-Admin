@@ -91,10 +91,10 @@ const StudentList = ({
 
   // Table configuration
   const columns = [
-    { width: 70, label: "Sr No", dataKey: "srNo" },
+    { width: 50, label: "Sr No", dataKey: "srNo" },
     { width: 150, label: "Name", dataKey: "name" },
     { width: 150, label: "Course", dataKey: "course" },
-    { width: 200, label: "Email", dataKey: "email" },
+    { width: 250, label: "Email", dataKey: "email" },
     { width: 130, label: "Phone", dataKey: "phone" },
     { width: 120, label: "City", dataKey: "city" },
     { width: 150, label: "Payment Status", dataKey: "paymentStatus" },

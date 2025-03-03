@@ -1,4 +1,7 @@
 import React from "react";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 
 const AddCourseForm = ({
   editingCourseId,
@@ -51,284 +54,282 @@ const AddCourseForm = ({
         <form onSubmit={handleAddCourse}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Course Name
-              </label>
-              <input
-                type="text"
+              <TextField
+                label="Course Name"
                 value={courseName}
                 onChange={(e) => setCourseName(e.target.value)}
-                placeholder="Course Name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Short Description
-              </label>
-              <input
-                type="text"
+              <TextField
+                label="Short Description"
                 value={shortDescription}
                 onChange={(e) => setShortDescription(e.target.value)}
-                placeholder="Short Description"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Course Image
-              </label>
-              <input
+              <TextField
                 type="file"
-                accept="image/*"
+                InputProps={{
+                  inputProps: {
+                    accept: "image/*",
+                  },
+                }}
                 onChange={(e) => setImage(e.target.files[0])}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Course Introduction
-              </label>
-              <textarea
+              <TextField
+                label="Course Introduction"
                 value={courseIntro}
                 onChange={(e) => setCourseIntro(e.target.value)}
-                placeholder="Course Introduction"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="4"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={4}
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Course Long Description
-              </label>
-              <textarea
+              <TextField
+                label="Course Long Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Course Long Description"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="4"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={4}
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Training Description
-              </label>
-              <textarea
+              <TextField
+                label="Training Description"
                 value={trainingDescription}
                 onChange={(e) => setTrainingDescription(e.target.value)}
-                placeholder="Training Description"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="4"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={4}
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Course Duration
-              </label>
-              <input
-                type="text"
+              <TextField
+                label="Course Duration"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                placeholder="Course Duration"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Enrolled Students
-              </label>
-              <input
+              <TextField
+                label="Enrolled Students"
                 type="number"
                 value={enrolled}
                 onChange={(e) => setEnrolled(e.target.value)}
-                placeholder="Number of Enrolled Students"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Projects
-              </label>
-              <input
+              <TextField
+                label="Projects"
                 type="number"
                 value={projects}
                 onChange={(e) => setProjects(e.target.value)}
-                placeholder="Enter the projects"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Modules
-              </label>
-              <input
+              <TextField
+                label="Modules"
                 type="number"
                 value={modules}
                 onChange={(e) => setModules(e.target.value)}
-                placeholder="Number of Modules"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Language
-              </label>
-              <select
+              <TextField
+                select
+                label="Language"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               >
-                <option value="">Select Language</option>
-                <option value="English">English</option>
-                <option value="Hindi">Hindi</option>
-                <option value="Marathi">Marathi</option>
-              </select>
+                <MenuItem value="English">English</MenuItem>
+                <MenuItem value="Hindi">Hindi</MenuItem>
+                <MenuItem value="Marathi">Marathi</MenuItem>
+              </TextField>
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Mode
-              </label>
-              <select
+              <TextField
+                select
+                label="Mode"
                 value={mode}
                 onChange={(e) => setMode(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               >
-                <option value="">Select Mode</option>
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-                <option value="Hybrid">Hybrid</option>
-              </select>
+                <MenuItem value="Online">Online</MenuItem>
+                <MenuItem value="Offline">Offline</MenuItem>
+                <MenuItem value="Hybrid">Hybrid</MenuItem>
+              </TextField>
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Rating
-              </label>
-              <input
+              <TextField
+                label="Rating"
                 type="number"
                 value={rating}
                 onChange={(e) => setRating(e.target.value)}
-                placeholder="Rating"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Quizzes
-              </label>
-              <input
+              <TextField
+                label="Quizzes"
                 type="number"
                 value={quizzes}
                 onChange={(e) => setQuizzes(e.target.value)}
-                placeholder="Number of Quizzes"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                variant="outlined"
+                fullWidth
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Certifications
-              </label>
-              <textarea
+              <TextField
+                label="Certifications (comma-separated)"
                 value={certifications.join(", ")}
                 onChange={(e) =>
                   setCertifications(
                     e.target.value.split(",").map((item) => item.trim())
                   )
                 }
-                placeholder="Certifications Description"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="3"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={3}
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Eligibility
-              </label>
-              <textarea
+              <TextField
+                label="Eligibility (comma-separated)"
                 value={eligibility.join(", ")}
                 onChange={(e) =>
                   setEligibility(
                     e.target.value.split(",").map((item) => item.trim())
                   )
                 }
-                placeholder="Course Eligibility"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="3"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={3}
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Achievements
-              </label>
-              <textarea
+              <TextField
+                label="Achievements (comma-separated)"
                 value={achievements.join(", ")}
                 onChange={(e) =>
                   setAchivements(
                     e.target.value.split(",").map((item) => item.trim())
                   )
                 }
-                placeholder="Course Achievements"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="3"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={3}
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Course Overview
-              </label>
-              <textarea
+              <TextField
+                label="Course Overview (comma-separated)"
                 value={courseOverview.join(", ")}
                 onChange={(e) =>
                   setCourseOverview(
                     e.target.value.split(",").map((item) => item.trim())
                   )
                 }
-                placeholder="Course Overview"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="3"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={3}
                 required
+                margin="normal"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-lg font-medium text-gray-700 mb-2">
-                Key Highlights
-              </label>
-              <textarea
+              <TextField
+                label="Key Highlights (comma-separated)"
                 value={keyHighlights.join(", ")}
                 onChange={(e) =>
                   setKeyHighlights(
                     e.target.value.split(",").map((item) => item.trim())
                   )
                 }
-                placeholder="Course Key Highlights"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                rows="3"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={3}
                 required
+                margin="normal"
               />
             </div>
           </div>
           <div className="mt-8 text-center">
-            <button
+            <Button
               type="submit"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400"
+              variant="contained"
+              size="small" // This is the key size prop
+              sx={{
+                fontSize: "0.875rem", // Match MUI's small button font size
+                textTransform: "none",
+                // px and py removed to use default small button padding
+              }}
             >
               {editingCourseId ? "Update Course" : "Add Course"}
-            </button>
+            </Button>
           </div>
         </form>
       </div>
