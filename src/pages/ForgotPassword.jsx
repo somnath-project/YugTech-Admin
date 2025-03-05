@@ -22,7 +22,7 @@ const ForgotPassword = () => {
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         {
           email: email,
-          reset_link: `${window.location.origin}/reset-password/${token}`,
+          reset_link: `https://yugtechacademy-admin.vercel.app/reset-password/${token}`,
           username: import.meta.env.VITE_LOGIN_USER,
         },
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
