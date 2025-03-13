@@ -41,6 +41,12 @@ const ContactForms = ({ contactform, handleDeleteContact }) => {
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
+                  Phone 
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Message
                 </th>
                 <th
@@ -57,11 +63,15 @@ const ContactForms = ({ contactform, handleDeleteContact }) => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {index + 1}
                   </td>
+                  
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {contact.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {contact.email}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {contact.phone}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     <div className="relative">
